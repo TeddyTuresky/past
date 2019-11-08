@@ -1,0 +1,24 @@
+clear all;clc
+
+j = [11470 14483 24756 34308 39159 45085 68875 71693 73106 75020 79339 80197 82679 93524 96299];
+
+for i = 1:length(j);
+    
+        eval(sprintf('cd /export/w/Visitors/Sikoya/Data_Sikoya/RotationData_MonolingualControlAdults/s%d/analysis ;',i));
+        
+        R1 = eval(sprintf('load(''rp_%d-IR1-006.txt''),i));
+        G = load('global_mean.txt');
+       
+        R1_rot = R1(:,4:6); % rotation motion only
+        R2(1,1) = 1;  % add 1 to Art
+        
+        %Combine
+        A1 = [R1_rot R2 G];
+        fp = fopen('rp_rotPlusArtPlusGlobal_1.txt','wt');
+        for ii = 1:64
+            fprintf(fp,'%d %d %d %d %d\n',A1(ii,:));
+        end
+        
+        fclose(fp);
+         
+end
